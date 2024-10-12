@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaApplication2.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
              x:Class="AvaloniaApplication2.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -33,8 +33,55 @@
 		</Grid>
 
 		<Grid Grid.Row="1" RowDefinitions="auto, *, 100">
-			<Label Grid.Row="0">Output</Label>
-			<TextBox Grid.Row="1" Text="{Binding Messages.MessagesText}" IsReadOnly="True"></TextBox>
+			<Label Grid.Row="0" IsEnabled="False" x:Name="ConsoleTitle">Output</Label>
+			<Label Grid.Row="0" IsVisible="False" x:Name="SettingsTitle">Settings</Label>
+			<TextBox Grid.Row="1" Text="{Binding Messages.MessagesText}" IsReadOnly="True" x:Name="ConsoleBox" TextChanged="TextBox_TextChanged" AcceptsReturn="True"></TextBox>
+			<Grid IsVisible="False" IsEnabled="False" Grid.Row="1" ColumnDefinitions="*,50, *" Margin="20" RowDefinitions="*, *, *, *" x:Name="SettingsBox" MaxHeight="200" MaxWidth="800">
+				<Grid Grid.Row="0" ColumnDefinitions="*, *">
+					<Label VerticalAlignment="Center">BaudRate</Label>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.BaudRate_s}" Height="20" Minimum="50" Maximum="921600"/>
+				</Grid>
+				<Grid Grid.Row="1" ColumnDefinitions="*, *">
+					<Label VerticalAlignment="Center">Parity</Label>
+					<ComboBox Grid.Column="1" VerticalAlignment="Center" SelectedIndex="{Binding Ports.Parity_s}">
+						<Label>None</Label>
+						<Label>Odd</Label>
+						<Label>Mark</Label>
+						<Label>Space</Label>
+					</ComboBox>
+				</Grid>
+				<Grid Grid.Row="2" ColumnDefinitions="*, *">
+					<Label VerticalAlignment="Center">DataBits</Label>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.DataBits_s}" Height="20" Minimum="5" Maximum="8"/>
+				</Grid>
+				<Grid Grid.Row="3" ColumnDefinitions="*, *">
+					<Label VerticalAlignment="Center">StopBits</Label>
+					<ComboBox Grid.Column="1" VerticalAlignment="Center" SelectedIndex="{Binding Ports.StopBits_s}">
+						<Label>None</Label>
+						<Label>One</Label>
+						<Label>Two</Label>
+						<Label>OnePointFive</Label>
+					</ComboBox>
+				</Grid>
+				<Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="*, *"  >
+					<Label VerticalAlignment="Center">HandShake</Label>
+					<ComboBox Grid.Column="1" VerticalAlignment="Center" SelectedIndex="{Binding Ports.Handshake_s}">
+						<Label>None</Label>
+						<Label>XOnXOff</Label>
+						<Label>RequestToSend</Label>
+						<Label>RequestToSendXOnXOff</Label>
+						
+					</ComboBox>
+				</Grid>
+				<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*, *" >
+					<Label VerticalAlignment="Center">ReadTimeout</Label>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.ReadTimeout_s}" Height="20" Minimum="0"/>
+				</Grid>
+				<Grid Grid.Row="2" Grid.Column="2" ColumnDefinitions="*, *" >
+					<Label VerticalAlignment="Center">WriteTimeout</Label>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.WriteTimeout_s}" Height="20" Minimum="0"/>
+				</Grid>
+			</Grid>
 			<Grid Grid.Row="2" ColumnDefinitions="60, *" >
 				<Button Grid.Column="0" Command="{Binding Messages.SendMessageCommand}">Send</Button>
 				<TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Messages.ToBeSentMessage}">
@@ -44,7 +91,6 @@
 				</TextBox>
 			</Grid>
 		</Grid>
-
 	</Grid>
 	
 

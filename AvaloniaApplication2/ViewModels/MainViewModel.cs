@@ -1,5 +1,9 @@
 ﻿using Avalonia.Media.Imaging;
+
 using AvaloniaApplication2.Services;
+using ReactiveUI;
+using System.IO;
+using System.IO.Ports;
 
 namespace AvaloniaApplication2.ViewModels;
 
@@ -9,7 +13,7 @@ public class MainViewModel : ViewModelBase
         
         serialPortSevice = new SerialPortSevice();
         Sender = new MessageSender(serialPortSevice);
-        
+       
         Messages = new MessagesViewModel(Sender);
         Receiver = new MessageReceiver(serialPortSevice, Messages);
         Ports = new SerialViewModel(serialPortSevice);
@@ -22,6 +26,10 @@ public class MainViewModel : ViewModelBase
     public MessageReceiver Receiver { get; set; }
     public SerialViewModel Ports { get; set; }
     public SerialPortSevice serialPortSevice { get; set; }
+
+
+
     private delegate void WriteLine(string message);
+
     
 }

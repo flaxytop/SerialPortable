@@ -30,15 +30,22 @@ public partial class MainView : UserControl
 
     private void Button_Click_Settings(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if(_settings == null)
-        {
 
-            _settings.Show();
-        }
-        else
-        {
-            _settings.Close();
-        }
+        SettingsBox.IsEnabled = !SettingsBox.IsEnabled;
+        SettingsBox.IsVisible = !SettingsBox.IsVisible;
+        SettingsTitle.IsVisible = !SettingsTitle.IsVisible;
+        SettingsTitle.IsEnabled = !SettingsTitle.IsEnabled;
+
+        ConsoleBox.IsEnabled = !ConsoleBox.IsEnabled;
+        ConsoleBox.IsVisible = !ConsoleBox.IsVisible;
+        ConsoleTitle.IsEnabled = !ConsoleTitle.IsEnabled;
+        ConsoleTitle.IsVisible = !ConsoleTitle.IsVisible;
+
         
+    }
+
+    private void TextBox_TextChanged(object? sender, Avalonia.Controls.TextChangedEventArgs e)
+    {
+        ConsoleBox.CaretIndex = int.MaxValue;
     }
 }

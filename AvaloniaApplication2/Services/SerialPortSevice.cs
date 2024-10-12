@@ -13,7 +13,7 @@ namespace AvaloniaApplication2.Services
 {
     public class SerialPortSevice
     {
-        private SerialPort Port;
+        public SerialPort Port;
         public string PortName { get => Port.PortName; set { if (value == null && !Port.IsOpen) { Port.PortName = "COM1"; } else { if (Port.IsOpen) { writeLineConsole($"{DateTime.Now} | Console: {PortName} is closed"); Port.Close(); } else { Port.PortName = value; } }; } }
         public int BufferSize { get => Port.WriteBufferSize; set { Port.WriteBufferSize = value; } }
         
@@ -28,11 +28,20 @@ namespace AvaloniaApplication2.Services
 
         public delegate void stopThread();
 
+
+        // Settings
+
+
+        // ******************************************
+
+
         public SerialPortSevice(string name, int buffer) {
-            Port = new SerialPort(name, buffer);
+            Port = new SerialPort(name, buffer);      
+
         }
         public SerialPortSevice() { 
             Port = new SerialPort();   
+           
         }
 
         public void Open()
@@ -57,6 +66,8 @@ namespace AvaloniaApplication2.Services
                 Port.Close();
                 StopThread();
                 
+                Port.Parity = Parity.None;
+
                 writeLineConsole($"{DateTime.Now} | Console: {PortName} is closed");
             }
             else
@@ -83,6 +94,7 @@ namespace AvaloniaApplication2.Services
         {
             if (Port.IsOpen)
             {
+              
                 Port.WriteLine(text);
             }
             else

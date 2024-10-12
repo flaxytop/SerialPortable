@@ -27,7 +27,7 @@ namespace AvaloniaApplication2.ViewModels
         public void ReceiveLoop()
         {
             string message = "";
-            char read;
+            char read = ' ';
             while (true)
             {
                 if (ShouldShutDownPermanently)
@@ -40,6 +40,7 @@ namespace AvaloniaApplication2.ViewModels
                     {
                         try
                         {
+
                             read = SerialPortSevice.ReadChar();
                             switch (read)
                             {
@@ -56,8 +57,13 @@ namespace AvaloniaApplication2.ViewModels
 
                             }
                         }
-                        catch (Exception ex) { }
+                        catch (TimeoutException ex) {
+                            
+                            
+                        }
                     }
+                     
+                    
                 }
                 Thread.Sleep(1);
             }
