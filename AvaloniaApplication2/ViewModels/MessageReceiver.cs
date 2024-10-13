@@ -57,7 +57,7 @@ namespace AvaloniaApplication2.ViewModels
 
                             }
                         }
-                        catch (TimeoutException ex) {
+                        catch (Exception ex) {
                             
                             
                         }

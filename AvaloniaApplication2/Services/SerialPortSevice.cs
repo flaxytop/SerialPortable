@@ -88,7 +88,6 @@ namespace AvaloniaApplication2.Services
         public char ReadChar()
         {
             return (char)Port.ReadChar();
-
         }
         public void WriteLine(string text)
         {
