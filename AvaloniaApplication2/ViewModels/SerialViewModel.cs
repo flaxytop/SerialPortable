@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-
+using AvaloniaApplication2.Enums;
 using AvaloniaApplication2.Services;
 using ReactiveUI;
 using System;
@@ -27,15 +27,15 @@ namespace AvaloniaApplication2.ViewModels
         public ReactiveCommand<Unit, Unit> OpenCommand { get; }
         public ReactiveCommand<Unit, Unit> CloseCommand { get; }
         public ReactiveCommand<Unit, Unit> UpdateCommand { get; }
-        public int BaudRate_s { get { return _sevice.Port.BaudRate; } set { _sevice.Port.BaudRate = value; } }
+        public int BaudRate_s { get { return _sevice.Port.BaudRate; } set { _sevice.Port.BaudRate = value; UpdateSetting("BaudRate", BaudRate_s.ToString()); } }
 
 
-        public int ReadTimeout_s { get { return _sevice.Port.ReadTimeout == -1 ? 0 : _sevice.Port.ReadTimeout; } set { _sevice.Port.ReadTimeout = value == 0 ? -1 : value; } }
-        public int WriteTimeout_s { get { return _sevice.Port.WriteTimeout == -1 ? 0 : _sevice.Port.WriteTimeout; } set { _sevice.Port.WriteTimeout = value == 0 ? -1 : value; } }
-        public Parity Parity_s { get { return _sevice.Port.Parity; } set { _sevice.Port.Parity = value; } }
-        public int DataBits_s { get { return _sevice.Port.DataBits; } set { _sevice.Port.DataBits = value; } }
-        public StopBits StopBits_s { get { return _sevice.Port.StopBits; } set { _sevice.Port.StopBits = value; } }
-        public Handshake Handshake_s { get { return _sevice.Port.Handshake; } set { _sevice.Port.Handshake = value; } }
+        public int ReadTimeout_s { get { return _sevice.Port.ReadTimeout == -1 ? 0 : _sevice.Port.ReadTimeout; } set { _sevice.Port.ReadTimeout = value == 0 ? -1 : value; UpdateSetting("ReadTimeout", ReadTimeout_s.ToString()); } }
+        public int WriteTimeout_s { get { return _sevice.Port.WriteTimeout == -1 ? 0 : _sevice.Port.WriteTimeout; } set { _sevice.Port.WriteTimeout = value == 0 ? -1 : value; UpdateSetting("WriteTimeout", WriteTimeout_s.ToString()); } }
+        public Parity Parity_s { get { return _sevice.Port.Parity; } set { _sevice.Port.Parity = value; UpdateSetting("Parity", ((int)Parity_s).ToString()); } }
+        public int DataBits_s { get { return _sevice.Port.DataBits; } set { _sevice.Port.DataBits = value; UpdateSetting("DataBits", DataBits_s.ToString()); } }
+        public StopBitsEnum StopBits_s { get { return (StopBitsEnum)_sevice.Port.StopBits-1; } set { _sevice.Port.StopBits = (StopBits)value+1; UpdateSetting("StopBits", ((int)StopBits_s).ToString()); } }
+        public Handshake Handshake_s { get { return _sevice.Port.Handshake; } set { _sevice.Port.Handshake = value; UpdateSetting("Handshake", ((int)Handshake_s).ToString()); } }
         public SerialViewModel(SerialPortSevice sevice) {
 
             _sevice = sevice;
@@ -45,15 +45,13 @@ namespace AvaloniaApplication2.ViewModels
             OpenCommand = ReactiveCommand.Create(sevice.Open);
             CloseCommand = ReactiveCommand.Create(sevice.Close);
             UpdateCommand = ReactiveCommand.Create(UpdatePorts);
-            var b = ConfigurationManager.AppSettings;
-            ReadTimeout_s = int.Parse(ConfigurationManager.AppSettings.Get("readtimeout"));
-            WriteTimeout_s = int.Parse(ConfigurationManager.AppSettings.Get("writetimeout"));
-            Parity_s = (Parity)int.Parse(ConfigurationManager.AppSettings.Get("parity"));
-            DataBits_s = int.Parse(ConfigurationManager.AppSettings.Get("databits"));
-            StopBits_s = (StopBits)int.Parse(ConfigurationManager.AppSettings.Get("stopbits"));
-            Handshake_s = (Handshake)int.Parse(ConfigurationManager.AppSettings.Get("handshake"));
-            
-            
+            ReadTimeout_s = int.Parse(ConfigurationManager.AppSettings.Get("ReadTimeout"));
+            WriteTimeout_s = int.Parse(ConfigurationManager.AppSettings.Get("WriteTimeout"));
+            Parity_s = (Parity)int.Parse(ConfigurationManager.AppSettings.Get("Parity"));
+            DataBits_s = int.Parse(ConfigurationManager.AppSettings.Get("DataBits"));
+            StopBits_s = (StopBitsEnum)int.Parse(ConfigurationManager.AppSettings.Get("StopBits"));
+            Handshake_s = (Handshake)int.Parse(ConfigurationManager.AppSettings.Get("Handshake"));
+            BaudRate_s = int.Parse(ConfigurationManager.AppSettings.Get("BaudRate"));
 
         }
 
@@ -61,6 +59,13 @@ namespace AvaloniaApplication2.ViewModels
         {
             AvailablePorts = _sevice.GetAvailableSerialPorts();
             _sevice.writeLineConsole($"{DateTime.Now} | Console: Available ports updated");
+        }
+        public void UpdateSetting(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings[key].Value = value;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
     }

@@ -15,10 +15,8 @@ using System;
 using System.Threading.Tasks;
 public partial class MainView : UserControl
 {
-    SettingsWindow _settings;
     public MainView()
     {
-        _settings = new SettingsWindow();
 
         InitializeComponent();
 
@@ -36,12 +34,14 @@ public partial class MainView : UserControl
         SettingsTitle.IsVisible = !SettingsTitle.IsVisible;
         SettingsTitle.IsEnabled = !SettingsTitle.IsEnabled;
 
-        ConsoleBox.IsEnabled = !ConsoleBox.IsEnabled;
+        var fg = ConsoleBox.IsEnabled = !ConsoleBox.IsEnabled;
         ConsoleBox.IsVisible = !ConsoleBox.IsVisible;
         ConsoleTitle.IsEnabled = !ConsoleTitle.IsEnabled;
         ConsoleTitle.IsVisible = !ConsoleTitle.IsVisible;
 
-        
+        SettingsButton.Content = fg ? "Settings" : "Console";
+
+
     }
 
     private void TextBox_TextChanged(object? sender, Avalonia.Controls.TextChangedEventArgs e)

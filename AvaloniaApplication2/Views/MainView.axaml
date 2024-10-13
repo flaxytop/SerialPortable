@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:AvaloniaApplication2.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
              x:Class="AvaloniaApplication2.Views.MainView"
-             x:DataType="vm:MainViewModel">
+             x:DataType="vm:MainViewModel"
+			 >
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -27,7 +28,7 @@
 						<Button Grid.Column="1" Command="{Binding Ports.CloseCommand}">Close</Button>
 						<Button Grid.Column="2" Command="{Binding Ports.UpdateCommand}">Update</Button>
 					</Grid>
-					<Button Grid.Column="1" Click="Button_Click_Settings">Settings</Button>
+					<Button Grid.Column="1" Click="Button_Click_Settings" x:Name="SettingsButton">Settings</Button>
 				</Grid>
 			</StackPanel>
 		</Grid>
@@ -39,7 +40,7 @@
 			<Grid IsVisible="False" IsEnabled="False" Grid.Row="1" ColumnDefinitions="*,50, *" Margin="20" RowDefinitions="*, *, *, *" x:Name="SettingsBox" MaxHeight="200" MaxWidth="800">
 				<Grid Grid.Row="0" ColumnDefinitions="*, *">
 					<Label VerticalAlignment="Center">BaudRate</Label>
-					<NumericUpDown Grid.Column="1" Value="{Binding Ports.BaudRate_s}" Height="20" Minimum="50" Maximum="921600"/>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.BaudRate_s}" Increment="100" Height="20" Minimum="50" Maximum="921600"/>
 				</Grid>
 				<Grid Grid.Row="1" ColumnDefinitions="*, *">
 					<Label VerticalAlignment="Center">Parity</Label>
@@ -52,12 +53,11 @@
 				</Grid>
 				<Grid Grid.Row="2" ColumnDefinitions="*, *">
 					<Label VerticalAlignment="Center">DataBits</Label>
-					<NumericUpDown Grid.Column="1" Value="{Binding Ports.DataBits_s}" Height="20" Minimum="5" Maximum="8"/>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.DataBits_s}" Increment="1" Height="20" Minimum="5" Maximum="8"/>
 				</Grid>
 				<Grid Grid.Row="3" ColumnDefinitions="*, *">
 					<Label VerticalAlignment="Center">StopBits</Label>
 					<ComboBox Grid.Column="1" VerticalAlignment="Center" SelectedIndex="{Binding Ports.StopBits_s}">
-						<Label>None</Label>
 						<Label>One</Label>
 						<Label>Two</Label>
 						<Label>OnePointFive</Label>
@@ -75,11 +75,11 @@
 				</Grid>
 				<Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="*, *" >
 					<Label VerticalAlignment="Center">ReadTimeout</Label>
-					<NumericUpDown Grid.Column="1" Value="{Binding Ports.ReadTimeout_s}" Height="20" Minimum="0"/>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.ReadTimeout_s}" Increment="100" Height="20" Minimum="0"/>
 				</Grid>
 				<Grid Grid.Row="2" Grid.Column="2" ColumnDefinitions="*, *" >
 					<Label VerticalAlignment="Center">WriteTimeout</Label>
-					<NumericUpDown Grid.Column="1" Value="{Binding Ports.WriteTimeout_s}" Height="20" Minimum="0"/>
+					<NumericUpDown Grid.Column="1" Value="{Binding Ports.WriteTimeout_s}" Increment="100" Height="20" Minimum="0"/>
 				</Grid>
 			</Grid>
 			<Grid Grid.Row="2" ColumnDefinitions="60, *" >
